@@ -26,7 +26,7 @@ app.use(helmet({
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'https://replyfy.onrender.com', 'https://replyfy.me', 'https://www.replyfy.me'],
+  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
@@ -71,12 +71,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 AI Keyboard API running on port ${PORT}`);
-  console.log(`📝 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🔐 Gemini API Key: ${process.env.GEMINI_API_KEY ? '✅ Configured' : '❌ Missing'}`);
-  console.log(`🌐 Web Demo: http://localhost:${PORT}`);
-});
+// Start server locally / on standalone container
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 AI Keyboard API running on port ${PORT}`);
+    console.log(`📝 Environment: ${process.env.NODE_ENV}`);
+    console.log(`🔐 Gemini API Key: ${process.env.GEMINI_API_KEY ? '✅ Configured' : '❌ Missing'}`);
+    console.log(`🌐 Web Demo: http://localhost:${PORT}`);
+  });
+}
 
 module.exports = app;
