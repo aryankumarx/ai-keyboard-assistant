@@ -88,7 +88,7 @@ frontend/node_modules/
 !INSTALLATION.md
 
 # Legacy/Unused template directories
-/frontend/
+!/frontend/index.html
 /docs/
 /android/
 
